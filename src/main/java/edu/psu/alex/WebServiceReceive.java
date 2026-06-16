@@ -6,11 +6,11 @@ import static spark.Spark.*;
 
 /**
  * Project: Lab 4
- * Purpose Details: Receives PizzaOrder objects as JSON data.
+ * Purpose Details: Receives pizza order JSON and converts it back into objects.
  * Course: IST 242
  * Author: Alexander Matthew Hurtak
  * Date Developed: 06/12/2026
- * Last Date Changed: 06/13/2026
+ * Last Date Changed: 06/16/2026
  * Rev: 1
  */
 public class WebServiceReceive {
@@ -25,22 +25,53 @@ public class WebServiceReceive {
 
             Gson gson = new Gson();
 
-            String json = request.body();
-
-            PizzaOrder pizza =
-                    gson.fromJson(json, PizzaOrder.class);
+            PizzaOrder pizzaOrder =
+                    gson.fromJson(request.body(), PizzaOrder.class);
 
             System.out.println();
             System.out.println("Pizza Order Received");
             System.out.println("--------------------");
+
             System.out.println("Customer Name: "
-                    + pizza.getCustomerName());
+                    + pizzaOrder.getCustomer().getFirstName()
+                    + " "
+                    + pizzaOrder.getCustomer().getLastName());
+
+            System.out.println("Phone Number: "
+                    + pizzaOrder.getCustomer().getPhoneNumber());
+
             System.out.println("Pizza Type: "
-                    + pizza.getPizzaType());
+                    + pizzaOrder.getOrderItem().getPizzaType());
+
+            System.out.println("Size: "
+                    + pizzaOrder.getOrderItem().getSize());
+
             System.out.println("Quantity: "
-                    + pizza.getQuantity());
+                    + pizzaOrder.getOrderItem().getQuantity());
+
             System.out.println("Price: $"
-                    + pizza.getPrice());
+                    + pizzaOrder.getOrderItem().getPrice());
+
+            System.out.println("Payment Type: "
+                    + pizzaOrder.getPayment().getPaymentType());
+
+            System.out.println("Paid: "
+                    + pizzaOrder.getPayment().isPaid());
+
+            System.out.println("Delivery Type: "
+                    + pizzaOrder.getDelivery().getDeliveryType());
+
+            System.out.println("Delivery Time: "
+                    + pizzaOrder.getDelivery().getDeliveryTime());
+
+            System.out.println("Address: "
+                    + pizzaOrder.getDelivery().getAddress().getStreet()
+                    + ", "
+                    + pizzaOrder.getDelivery().getAddress().getCity()
+                    + ", "
+                    + pizzaOrder.getDelivery().getAddress().getState()
+                    + " "
+                    + pizzaOrder.getDelivery().getAddress().getZipCode());
 
             response.type("text/plain");
 
